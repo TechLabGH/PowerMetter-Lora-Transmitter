@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Page Title</title>
+            <script src="/jquery-3.6.4.min.js"></script>
+
+            <script language=javascript>
+                // tworzymy zmienna
+                var object = false;
+ 
+                if (window.XMLHttpRequest) object = new XMLHttpRequest();
+                else if (window.ActiveXObject) object = new ActiveXObject("Microsoft.XMLHTTP");
+ 
+                // ponizsza funkcja pobiera dane ze wskazanego zrodla (pliku lub skryptu php) do wskazanego 
+                // DIVa poprzez obiekt XMLHttpRequest    
+                function getData(dataSource, divID)
+                {
+                    // kontynuuje wylacznie gdy obiekt nie jest zajety
+                    if (object.readyState==4 || object.readyState==0) 
+                    {
+                        // tworzy zmienna odpowiadajaca konkretnemu obiektowi na stronie
+                        var obj = document.getElementById(divID);
+                
+                        // czyta z pliku lub wykonuje skrypt
+                        object.open("GET", dataSource);
+                
+                        // definiuje metode obslugi odpowiedzi serwera
+                        object.onreadystatechange = function()
+                        {
+                            // kontynuuje jesli transmisja zostala zakonczona powodzeniem
+                            if (object.readyState == 4 && object.status == 200) 
+                            obj.innerHTML= object.responseText;
+                        }
+                        // wysyla zadanie do serwera
+                        object.send(null);
+                    }
+                }
+
+                function getstatA()
+                {
+                    getData('POW_A','POW_A');
+                }
+                function getstatB()
+                {
+                    getData('POW_B','POW_B');
+                }
+                function getstatC()
+                {
+                    getData('TEMP','TEMP');
+                }
+                function getstatD()
+                {
+                    getData('HUM','HUM');
+                }
+                function getstatE()
+                {
+                    getData('LED_A','LED_A');
+                }
+                function getstatF()
+                {
+                    getData('LED_B','LED_B');
+                }
+
+            </script>
+        </head>
+        <body>
+
+        <h1>Power Meter LORA logger</h1>   
+        <p>Count A: <div id="POW_A"></div></p>
+        <script language=javascript>
+            getstatA();
+        </script>
+        <p>Count B: <div id="POW_B"></div></p>
+        <script language=javascript>
+            getstatB();
+        </script>
+        <p>Temperature: <div id="TEMP"></div></p>
+        <script language=javascript>
+            getstatC();
+        </script>
+        <p>Humidify: <div id="HUM"></div></p>
+        <script language=javascript>
+            getstatD();
+        </script>
+        <p>LED A Status: <div id="LED_A"></div></p>
+        <script language=javascript>
+            getstatE();
+        </script>
+        <p>LED B Status: <div id="LED_B"></div></p>
+        <script language=javascript>
+            getstatF();
+        </script>
+
+        </body>
+    </html>
