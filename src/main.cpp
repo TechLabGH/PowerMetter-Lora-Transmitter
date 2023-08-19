@@ -41,13 +41,19 @@ uint8_t menu_b    = 0;  // pressed menu button
 uint8_t wifi_on   = 0;  // Wifi terminal disabled by default
 uint8_t LORA_st   = 0;  // status of LORA
 
+void F_ping() {
+    String   S_DATA = "<PING>";
+
+    int state = radio.transmit(S_DATA);
+}
+
 void F_upload(){
     // function uploading data over LORA
-    String   S_DATA = "#" + String(pow_a);
+    String   S_DATA = "<" + String(pow_a);
     S_DATA = S_DATA + "#" + String(pow_b);
     S_DATA = S_DATA + "#" + String(float(int(temp*100))/100);
     S_DATA = S_DATA + "#" + String(float(int(hum*100))/100);
-    S_DATA = S_DATA + "#";
+    S_DATA = S_DATA + ">";
 
     int state = radio.transmit(S_DATA);
 
@@ -111,14 +117,15 @@ void IRAM_ATTR onTimer_sec(){
 
 void IRAM_ATTR onTimer_min(){
     time_min++;
-    f_refresh = 1;
-    if (time_min % 5 == 0) {
-        f_upload = 1;
+
+    if (time_min % 5 == 0 && time_min < 60) {
+        F_ping();
     }
+
     if (time_min == 30) {
-        time_min =0;
+        time_min  = 0;
     }
-    
+    f_refresh = 1;
 }
 
 void CountAInc(){
@@ -226,4 +233,3 @@ void loop() {
     }
 
 }
-
