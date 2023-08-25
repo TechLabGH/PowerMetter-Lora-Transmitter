@@ -57,10 +57,10 @@ void F_ping() {
 // ==============================function reporting readings==============================
 void F_upload(){
     // function uploading data over LORA
-    String   S_DATA = "<" + String(pow_a);
-    S_DATA = S_DATA + "#" + String(pow_b);
-    S_DATA = S_DATA + "#" + String(float(int(temp*100))/100);
-    S_DATA = S_DATA + "#" + String(float(int(hum*100))/100);
+    String   S_DATA = "<A" + String(pow_a);
+    S_DATA = S_DATA + "B" + String(pow_b);
+    S_DATA = S_DATA + "T" + String(float(int(temp*100))/100);
+    S_DATA = S_DATA + "H" + String(float(int(hum*100))/100);
     S_DATA = S_DATA + ">";
 
     int state = radio.transmit(S_DATA);
